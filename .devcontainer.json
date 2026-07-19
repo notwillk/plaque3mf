@@ -1,6 +1,48 @@
 {
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "name": "Plaque3MF",
+  "build": {
+    "dockerfile": ".devcontainer/Dockerfile",
+    "context": "."
+  },
+  "initializeCommand": "mkdir -p \"$HOME/.codex\"",
   "features": {
-    "ghcr.io/devcontainers/features/node:1": {}
-  }
+    "ghcr.io/devcontainers/features/rust:1": {
+      "version": "latest",
+      "profile": "minimal",
+      "components": "rust-analyzer,rust-src,rustfmt,clippy,llvm-tools-preview"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {
+      "version": "latest"
+    },
+    "ghcr.io/sliekens/devcontainer-features/codex:1": {
+      "version": "latest"
+    }
+  },
+  "containerEnv": {
+    "CARGO_TERM_COLOR": "always",
+    "RUST_BACKTRACE": "1"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "rust-lang.rust-analyzer",
+        "vadimcn.vscode-lldb",
+        "tamasfe.even-better-toml",
+        "llvm-vs-code-extensions.vscode-clangd",
+        "DavidAnson.vscode-markdownlint"
+      ],
+      "settings": {
+        "[rust]": {
+          "editor.defaultFormatter": "rust-lang.rust-analyzer",
+          "editor.formatOnSave": true
+        },
+        "rust-analyzer.check.command": "clippy",
+        "rust-analyzer.cargo.features": "all",
+        "files.watcherExclude": {
+          "**/target/**": true
+        }
+      }
+    }
+  },
+  "remoteUser": "vscode"
 }
