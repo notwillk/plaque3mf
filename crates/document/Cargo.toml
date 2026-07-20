@@ -7,3 +7,9 @@ publish = false
 
 [lints]
 workspace = true
+
+[dependencies]
+pdfium-render = { version = "=0.9.3", default-features = false, features = ["pdfium_7881", "thread_safe"], optional = true }
+
+[features]
+pdfium = ["dep:pdfium-render"]

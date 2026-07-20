@@ -3,6 +3,14 @@
 //! Renderer adapters supply an already-composited grayscale raster. The core
 //! types here remain independent of PDF renderers and image libraries.
 
+#[cfg(feature = "pdfium")]
+pub mod pdfium;
+mod rgba;
+mod sizing;
+
+pub use rgba::rgba_over_white_to_grayscale;
+pub use sizing::{OutputSizeConstraintsMicrometers, RasterizationPlan, SamplingPitchMicrometers};
+
 use std::{error::Error, fmt};
 
 /// Maximum number of pixels accepted by one canonical raster.
@@ -356,6 +364,37 @@ pub enum DocumentError {
         /// Supplied micrometres.
         micrometers: i64,
     },
+    /// Neither a maximum output width nor height was supplied.
+    MissingOutputSizeConstraint,
+    /// A sampling pitch is zero or negative.
+    NonPositiveSamplingPitch {
+        /// Supplied micrometres per pixel.
+        micrometers: i64,
+    },
+    /// Aspect-ratio fitting rounded an output dimension to zero micrometres.
+    OutputDimensionRoundsToZero {
+        /// The dimension that became zero.
+        dimension: Dimension,
+    },
+    /// An output dimension cannot be represented in integer micrometres.
+    OutputDimensionTooLarge {
+        /// The dimension that exceeded the supported range.
+        dimension: Dimension,
+    },
+    /// A pixel dimension cannot be represented as a 32-bit unsigned integer.
+    PixelDimensionTooLarge {
+        /// The dimension that exceeded the supported range.
+        dimension: Dimension,
+        /// Requested pixel count along that dimension.
+        pixels: u128,
+    },
+    /// RGBA byte length does not equal four times width times height.
+    RgbaDataLengthMismatch {
+        /// Required byte count.
+        expected: usize,
+        /// Supplied byte count.
+        actual: usize,
+    },
     /// A binary mask contains a byte other than zero or one.
     InvalidBinaryValue {
         /// Row-major position of the byte.
@@ -389,6 +428,29 @@ impl fmt::Display for DocumentError {
             } => write!(
                 formatter,
                 "physical {dimension} must be positive; got {micrometers} micrometres"
+            ),
+            Self::MissingOutputSizeConstraint => {
+                formatter.write_str("at least one maximum output dimension is required")
+            }
+            Self::NonPositiveSamplingPitch { micrometers } => write!(
+                formatter,
+                "sampling pitch must be positive; got {micrometers} micrometres per pixel"
+            ),
+            Self::OutputDimensionRoundsToZero { dimension } => write!(
+                formatter,
+                "fitted output {dimension} rounds to zero micrometres"
+            ),
+            Self::OutputDimensionTooLarge { dimension } => write!(
+                formatter,
+                "fitted output {dimension} exceeds the supported micrometre range"
+            ),
+            Self::PixelDimensionTooLarge { dimension, pixels } => write!(
+                formatter,
+                "pixel {dimension} of {pixels} exceeds the supported 32-bit range"
+            ),
+            Self::RgbaDataLengthMismatch { expected, actual } => write!(
+                formatter,
+                "RGBA data has length {actual}; expected {expected}"
             ),
             Self::InvalidBinaryValue { index, value } => write!(
                 formatter,
