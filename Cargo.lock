@@ -303,7 +303,9 @@ dependencies = [
 name = "plaque3mf-export-3mf"
 version = "0.1.0"
 dependencies = [
+ "plaque3mf-document",
  "plaque3mf-mesh25d",
+ "plaque3mf-planar",
 ]
 
 [[package]]
@@ -325,6 +327,7 @@ dependencies = [
 name = "plaque3mf-mesh25d"
 version = "0.1.0"
 dependencies = [
+ "plaque3mf-document",
  "plaque3mf-planar",
 ]
 

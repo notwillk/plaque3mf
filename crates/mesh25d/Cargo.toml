@@ -8,5 +8,8 @@ publish = false
 [dependencies]
 plaque3mf-planar.workspace = true
 
+[dev-dependencies]
+plaque3mf-document.workspace = true
+
 [lints]
 workspace = true

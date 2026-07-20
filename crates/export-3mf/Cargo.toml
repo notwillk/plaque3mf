@@ -8,5 +8,9 @@ publish = false
 [dependencies]
 plaque3mf-mesh25d.workspace = true
 
+[dev-dependencies]
+plaque3mf-document.workspace = true
+plaque3mf-planar.workspace = true
+
 [lints]
 workspace = true
