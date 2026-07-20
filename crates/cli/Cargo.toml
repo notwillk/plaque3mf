@@ -1,0 +1,16 @@
+[package]
+name = "plaque3mf-cli"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish = false
+
+[[bin]]
+name = "plaque3mf"
+path = "src/main.rs"
+
+[dependencies]
+plaque3mf-engine.workspace = true
+
+[lints]
+workspace = true

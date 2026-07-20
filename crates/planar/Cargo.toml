@@ -1,0 +1,12 @@
+[package]
+name = "plaque3mf-planar"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish = false
+
+[dependencies]
+plaque3mf-document.workspace = true
+
+[lints]
+workspace = true

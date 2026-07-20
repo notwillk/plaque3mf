@@ -1,0 +1,16 @@
+[package]
+name = "plaque3mf-engine"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish = false
+
+[dependencies]
+plaque3mf-document.workspace = true
+plaque3mf-export-3mf.workspace = true
+plaque3mf-job-spec.workspace = true
+plaque3mf-mesh25d.workspace = true
+plaque3mf-planar.workspace = true
+
+[lints]
+workspace = true

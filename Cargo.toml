@@ -1,0 +1,30 @@
+[workspace]
+resolver = "3"
+members = [
+    "crates/cli",
+    "crates/document",
+    "crates/engine",
+    "crates/export-3mf",
+    "crates/ffi",
+    "crates/job-spec",
+    "crates/mesh25d",
+    "crates/planar",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+
+[workspace.dependencies]
+plaque3mf-document = { path = "crates/document" }
+plaque3mf-engine = { path = "crates/engine" }
+plaque3mf-export-3mf = { path = "crates/export-3mf" }
+plaque3mf-job-spec = { path = "crates/job-spec" }
+plaque3mf-mesh25d = { path = "crates/mesh25d" }
+plaque3mf-planar = { path = "crates/planar" }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.150"
+
+[workspace.lints.rust]
+rust_2018_idioms = "deny"
