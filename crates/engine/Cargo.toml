@@ -5,6 +5,10 @@ edition.workspace = true
 rust-version.workspace = true
 publish = false
 
+[features]
+default = []
+pdfium = ["plaque3mf-document/pdfium"]
+
 [dependencies]
 plaque3mf-document.workspace = true
 plaque3mf-export-3mf.workspace = true
